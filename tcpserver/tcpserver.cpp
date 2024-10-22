@@ -35,7 +35,9 @@ public:
     }
 
     void send(int protocol, const std::string& data) {
-        write(data);
+        char head[9] = { 0 };
+        sprintf_s(head, sizeof(head), "%08d\0", data.size());
+        write(std::string(head) + data);
     }
 
 private:
@@ -163,6 +165,16 @@ public:
         }
     }
 
+    void send_message(LONG token, const std::string& msg) {
+        if (m_mapSessions.find(token) == m_mapSessions.end()) {
+            return;
+        }
+        if (!m_mapSessions[token].get()) {
+            return;
+        }
+        m_mapSessions[token].get()->send(1, msg);
+    }
+
 private:
     void do_accept()
     {
@@ -207,7 +219,15 @@ int main()
 {
     try {
         gameserver s("127.0.0.1", 8888);
-        auto ch = getchar();
+        int ch = 0;
+        do {
+            ch = getchar();
+            ch = toupper(ch);
+            if ('A' == ch)
+            {
+                s.send_message(0,"test");
+            }
+        } while (ch != 'Q');
     }
     catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << "\n";
