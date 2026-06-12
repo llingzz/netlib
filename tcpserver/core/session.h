@@ -27,6 +27,9 @@ public:
 
     uint64_t token() const;
 
+    // 对端地址 (用于 IP 过滤等)
+    std::string remote_addr() const;
+
     void reply(std::string_view data);
     void start();
     void close();

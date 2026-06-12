@@ -103,7 +103,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
@@ -119,7 +119,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;ASIO_STANDALONE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -130,18 +130,41 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="server.cpp" />
-    <ClCompile Include="session.cpp" />
+    <!-- 统一入口 -->
     <ClCompile Include="tcpserver.cpp" />
+    <!-- Core 引擎 -->
+    <ClCompile Include="core\server.cpp" />
+    <ClCompile Include="core\session.cpp" />
+    <!-- Framework -->
+    <ClCompile Include="application.cpp" />
+    <ClCompile Include="service.cpp" />
+    <!-- Examples -->
+    <ClCompile Include="examples\echo\echo_service.cpp" />
+    <ClCompile Include="examples\chat\chat_service.cpp" />
+    <ClCompile Include="examples\dispatcher\dispatcher_service.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buffer_pool.h" />
-    <ClInclude Include="config.h" />
-    <ClInclude Include="protocol.h" />
-    <ClInclude Include="server.h" />
-    <ClInclude Include="session.h" />
-    <ClInclude Include="shared_frame_pool.h" />
-    <ClInclude Include="work_queue.h" />
+    <!-- Core 头文件 -->
+    <ClInclude Include="core\buffer_pool.h" />
+    <ClInclude Include="core\config.h" />
+    <ClInclude Include="core\protocol.h" />
+    <ClInclude Include="core\server.h" />
+    <ClInclude Include="core\session.h" />
+    <ClInclude Include="core\shared_frame_pool.h" />
+    <ClInclude Include="core\work_queue.h" />
+    <!-- Framework 头文件 -->
+    <ClInclude Include="service.h" />
+    <ClInclude Include="middleware.h" />
+    <ClInclude Include="dispatcher.h" />
+    <ClInclude Include="application.h" />
+    <!-- Middleware 头文件 -->
+    <ClInclude Include="middleware\connection_limiter.h" />
+    <ClInclude Include="middleware\rate_limiter.h" />
+    <ClInclude Include="middleware\access_log.h" />
+    <!-- Example 头文件 -->
+    <ClInclude Include="examples\echo\echo_service.h" />
+    <ClInclude Include="examples\chat\chat_service.h" />
+    <ClInclude Include="examples\dispatcher\dispatcher_service.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

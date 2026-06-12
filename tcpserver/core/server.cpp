@@ -8,10 +8,12 @@
 #include <pthread.h>
 #endif
 
-server::server(const server_config& cfg, msg_handler on_msg, disconnect_handler on_disc)
+server::server(const server_config& cfg, msg_handler on_msg, disconnect_handler on_disc,
+               connect_handler on_connect)
     : cfg_(cfg)
     , on_msg_(std::move(on_msg))
     , on_disconnect_(std::move(on_disc))
+    , on_connect_(std::move(on_connect))
 {
     int io_cnt = std::max<int>(cfg.io_threads  > 0 ? cfg.io_threads : std::thread::hardware_concurrency() * 2 / 3, 1);
     int biz_cnt = std::max<int>(cfg.biz_threads > 0 ? cfg.biz_threads : std::thread::hardware_concurrency() / 3, 1);
@@ -187,6 +189,14 @@ void server::do_accept(int io_idx)
         int wq_idx = static_cast<int>(token % wq_.size());
         auto sess = std::make_shared<session>(std::move(sock), *this, *wq_[wq_idx], buf_pool_, frame_pool_, cfg_, token);
         io->sessions[token] = sess;
+
+        // 连接级过滤: middleware 可拒绝连接
+        if (on_connect_ && !on_connect_(sess.get())) {
+            io->sessions.erase(token);
+            do_accept(io_idx);
+            return;
+        }
+
         sess->start();
         metrics.connections.fetch_add(1, std::memory_order_relaxed);
 

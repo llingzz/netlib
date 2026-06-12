@@ -1,51 +1,111 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
+    <Filter Include="core">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
+    <Filter Include="examples">
+      <UniqueIdentifier>{B2C3D4E5-F6A7-8901-BCDE-F12345678901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="middleware">
+      <UniqueIdentifier>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\chat">
+      <UniqueIdentifier>{b038763f-37bd-4211-923b-c01b29f99081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\dispatcher">
+      <UniqueIdentifier>{270def3d-92e7-4950-aa15-90b8ef8fb504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="examples\echo">
+      <UniqueIdentifier>{3d5f3848-25cb-4bad-8da2-e759f3d1952d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="tcpserver.cpp">
-      <Filter>源文件</Filter>
+    <!-- 统一入口 -->
+    <ClCompile Include="tcpserver.cpp" />
+    <!-- Core 引擎 -->
+    <ClCompile Include="core\server.cpp">
+      <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="server.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="core\session.cpp">
+      <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="session.cpp">
-      <Filter>源文件</Filter>
+    <!-- Framework -->
+    <ClCompile Include="application.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="service.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <!-- Examples -->
+    <ClCompile Include="examples\chat\chat_service.cpp">
+      <Filter>examples\chat</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\dispatcher\dispatcher_service.cpp">
+      <Filter>examples\dispatcher</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\echo\echo_service.cpp">
+      <Filter>examples\echo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="buffer_pool.h">
-      <Filter>头文件</Filter>
+    <!-- Core 头文件 -->
+    <ClInclude Include="core\buffer_pool.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="config.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\config.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="protocol.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\protocol.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="server.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\server.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="session.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\session.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="shared_frame_pool.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\shared_frame_pool.h">
+      <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="work_queue.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="core\work_queue.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <!-- Framework 头文件 -->
+    <ClInclude Include="service.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="middleware.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="dispatcher.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="application.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <!-- Middleware 头文件 -->
+    <ClInclude Include="middleware\connection_limiter.h">
+      <Filter>middleware</Filter>
+    </ClInclude>
+    <ClInclude Include="middleware\rate_limiter.h">
+      <Filter>middleware</Filter>
+    </ClInclude>
+    <ClInclude Include="middleware\access_log.h">
+      <Filter>middleware</Filter>
+    </ClInclude>
+    <!-- Example 头文件 -->
+    <ClInclude Include="examples\chat\chat_service.h">
+      <Filter>examples\chat</Filter>
+    </ClInclude>
+    <ClInclude Include="examples\dispatcher\dispatcher_service.h">
+      <Filter>examples\dispatcher</Filter>
+    </ClInclude>
+    <ClInclude Include="examples\echo\echo_service.h">
+      <Filter>examples\echo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

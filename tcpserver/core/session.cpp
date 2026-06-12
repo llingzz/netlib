@@ -39,6 +39,12 @@ uint64_t session::token() const
     return token_;
 }
 
+std::string session::remote_addr() const
+{
+    asio::error_code ec;
+    return socket_.remote_endpoint(ec).address().to_string();
+}
+
 void session::start()
 {
     do_read();

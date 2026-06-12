@@ -16,10 +16,12 @@ class session;
 
 using msg_handler        = std::function<void(session*, std::string_view)>;
 using disconnect_handler = std::function<void(session*)>;
+using connect_handler    = std::function<bool(session*)>;
 
 class server {
 public:
-    server(const server_config& cfg, msg_handler on_msg, disconnect_handler on_disc);
+    server(const server_config& cfg, msg_handler on_msg, disconnect_handler on_disc,
+           connect_handler on_connect = nullptr);
     ~server();
 
     void run();
@@ -74,6 +76,7 @@ private:
     server_config       cfg_;
     msg_handler         on_msg_;
     disconnect_handler  on_disconnect_;
+    connect_handler     on_connect_;
 
     std::vector<std::unique_ptr<io_context>> io_ctxs_;
     std::vector<std::thread>   io_threads_;
