@@ -1,40 +1,47 @@
 cmake_minimum_required(VERSION 3.16)
-project(tcpserver VERSION 1.0 LANGUAGES CXX)
+project(netlib LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-# ---------------------------------------------------------------------------
-# Dependencies
-# ---------------------------------------------------------------------------
-find_package(asio CONFIG REQUIRED)
+# spdlog
 find_package(spdlog CONFIG REQUIRED)
+
+# asio (header-only, no CMake config in apt)
+find_path(ASIO_INCLUDE_DIR asio.hpp)
+if(NOT ASIO_INCLUDE_DIR)
+    message(FATAL_ERROR "asio not found. Install: sudo apt install libasio-dev")
+endif()
+
 find_package(Threads REQUIRED)
 
-# ---------------------------------------------------------------------------
-# Executable
-# ---------------------------------------------------------------------------
-add_executable(tcpserver
-    tcpserver.cpp
-    tcpserver.h
+# 源文件
+set(SOURCES
+    netlib.cpp
+    session.cpp
+    server.cpp
 )
 
-target_link_libraries(tcpserver PRIVATE
-    asio::asio
+set(HEADERS
+    config.h
+    protocol.h
+    work_queue.h
+    buffer_pool.h
+    shared_frame_pool.h
+    session.h
+    server.h
+)
+
+add_executable(netlib ${SOURCES} ${HEADERS})
+
+target_include_directories(netlib PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${ASIO_INCLUDE_DIR}
+)
+
+target_link_libraries(netlib PRIVATE
     spdlog::spdlog
     Threads::Threads
 )
 
-# ---------------------------------------------------------------------------
-# Platform-specific
-# ---------------------------------------------------------------------------
-if(WIN32)
-    # Suppress asio _WIN32_WINNT default warning
-    target_compile_definitions(tcpserver PRIVATE _WIN32_WINNT=0x0601)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    # asio may need librt on older glibc for timerfd etc.
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10)
-        target_link_libraries(tcpserver PRIVATE rt)
-    endif()
-endif()
+target_compile_definitions(netlib PRIVATE ASIO_STANDALONE)

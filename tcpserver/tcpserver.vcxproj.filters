@@ -18,7 +18,33 @@
     <ClCompile Include="tcpserver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClInclude Include="tcpserver.h">
+    <ClCompile Include="server.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="session.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="buffer_pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="protocol.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="server.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="session.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="shared_frame_pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="work_queue.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
