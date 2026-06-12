@@ -1,10 +1,10 @@
 // ──── Dispatcher 演示服务实现 ────────────────────────────────
 
 #include "dispatcher_service.h"
-#include "../../application.h"
-#include "../../service.h"
-#include "../../dispatcher.h"
-#include "../../middleware/access_log.h"
+#include "../../framework/application.h"
+#include "../../framework/service.h"
+#include "../../framework/dispatcher.h"
+#include "../../framework/middleware/access_log.h"
 
 #include <spdlog/spdlog.h>
 #include <atomic>

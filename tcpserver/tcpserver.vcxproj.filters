@@ -22,6 +22,12 @@
     <Filter Include="examples\echo">
       <UniqueIdentifier>{3d5f3848-25cb-4bad-8da2-e759f3d1952d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="examples\http">
+      <UniqueIdentifier>{4A5F6B7C-8D9E-0F1A-2B3C-4D5E6F7A8B9C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework\codec">
+      <UniqueIdentifier>{5B6C7D8E-9F0A-1B2C-3D4E-5F6A7B8C9D0E}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <!-- 统一入口 -->
@@ -34,10 +40,10 @@
       <Filter>core</Filter>
     </ClCompile>
     <!-- Framework -->
-    <ClCompile Include="application.cpp">
+    <ClCompile Include="framework\application.cpp">
       <Filter>framework</Filter>
     </ClCompile>
-    <ClCompile Include="service.cpp">
+    <ClCompile Include="framework\service.cpp">
       <Filter>framework</Filter>
     </ClCompile>
     <!-- Examples -->
@@ -50,6 +56,9 @@
     <ClCompile Include="examples\echo\echo_service.cpp">
       <Filter>examples\echo</Filter>
     </ClCompile>
+    <ClCompile Include="examples\http\http_service.cpp">
+      <Filter>examples\http</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <!-- Core 头文件 -->
@@ -57,9 +66,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\config.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="core\protocol.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="core\server.h">
@@ -75,26 +81,36 @@
       <Filter>core</Filter>
     </ClInclude>
     <!-- Framework 头文件 -->
-    <ClInclude Include="service.h">
+    <ClInclude Include="framework\service.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="middleware.h">
+    <ClInclude Include="framework\middleware.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="dispatcher.h">
+    <ClInclude Include="framework\dispatcher.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="application.h">
+    <ClInclude Include="framework\application.h">
       <Filter>framework</Filter>
+    </ClInclude>
+    <!-- Codec 头文件 -->
+    <ClInclude Include="framework\codec\codec.h">
+      <Filter>framework\codec</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\codec\length_prefixed.h">
+      <Filter>framework\codec</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\codec\raw_codec.h">
+      <Filter>framework\codec</Filter>
     </ClInclude>
     <!-- Middleware 头文件 -->
-    <ClInclude Include="middleware\connection_limiter.h">
+    <ClInclude Include="framework\middleware\connection_limiter.h">
       <Filter>middleware</Filter>
     </ClInclude>
-    <ClInclude Include="middleware\rate_limiter.h">
+    <ClInclude Include="framework\middleware\rate_limiter.h">
       <Filter>middleware</Filter>
     </ClInclude>
-    <ClInclude Include="middleware\access_log.h">
+    <ClInclude Include="framework\middleware\access_log.h">
       <Filter>middleware</Filter>
     </ClInclude>
     <!-- Example 头文件 -->
@@ -106,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="examples\echo\echo_service.h">
       <Filter>examples\echo</Filter>
+    </ClInclude>
+    <ClInclude Include="examples\http\http_service.h">
+      <Filter>examples\http</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

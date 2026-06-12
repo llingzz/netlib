@@ -20,7 +20,7 @@ struct server_config
     int idle_timeout_sec = 300;
 
     // 消息限制
-    uint16_t max_payload = 65535;
+    size_t max_payload = 65535;
     size_t read_buf_size = 65536;
 
     // 写队列限制

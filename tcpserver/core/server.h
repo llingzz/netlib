@@ -14,35 +14,34 @@
 
 class session;
 
-using msg_handler        = std::function<void(session*, std::string_view)>;
-using disconnect_handler = std::function<void(session*)>;
-using connect_handler    = std::function<bool(session*)>;
+using data_handler        = std::function<void(session*, std::string_view)>;
+using disconnect_handler  = std::function<void(session*)>;
+using connect_handler     = std::function<bool(session*)>;
 
 class server {
 public:
-    server(const server_config& cfg, msg_handler on_msg, disconnect_handler on_disc,
+    server(const server_config& cfg, data_handler on_data,
+           disconnect_handler on_disc,
            connect_handler on_connect = nullptr);
     ~server();
 
     void run();
     void shutdown();
-    void send_message(uint64_t token, std::string msg);
+    void send_data(uint64_t token, const char* data, size_t len);
 
     // 供 session 访问
     work_queue& wq(int idx) { return *wq_[idx]; }
     int biz_threads() const { return static_cast<int>(wq_.size()); }
 
-    // Inline 模式: session 直接调用 handler (io 线程)
-    void handle_message(session* sess, std::string_view msg) {
-        metrics.msg_received.fetch_add(1, std::memory_order_relaxed);
-        if (on_msg_) on_msg_(sess, msg);
+    // Inline: session 直接回调 (io 线程)
+    void handle_data(session* sess, std::string_view data) {
+        if (on_data_) on_data_(sess, data);
     }
     void handle_disconnect(session* sess) {
         metrics.connections.fetch_sub(1, std::memory_order_relaxed);
         if (on_disconnect_) on_disconnect_(sess);
     }
 
-    // 非串行模式: round-robin 选队列
     int next_wq_idx() {
         int n = next_wq_.fetch_add(1, std::memory_order_relaxed);
         return n % static_cast<int>(wq_.size());
@@ -56,6 +55,7 @@ public:
 
     server_config& config() { return cfg_; }
     const server_config& config() const { return cfg_; }
+    SharedFramePool& frame_pool() { return frame_pool_; }
 
 private:
     void do_accept(int io_idx);
@@ -74,7 +74,7 @@ private:
     };
 
     server_config       cfg_;
-    msg_handler         on_msg_;
+    data_handler        on_data_;
     disconnect_handler  on_disconnect_;
     connect_handler     on_connect_;
 
@@ -87,23 +87,16 @@ private:
     buffer_pool       buf_pool_;
     SharedFramePool   frame_pool_;
 
-public:
-    SharedFramePool& frame_pool() { return frame_pool_; }
-
-private:
-
     std::atomic<bool>    running_{false};
     std::atomic<int>     next_io_ctx_{0};
-    std::atomic<int>     next_wq_{0};       // 非串行模式队列分发
+    std::atomic<int>     next_wq_{0};
 
 public:
-    // 内置 metrics
+    // 内置 metrics (纯字节/连接粒度 — "消息"概念在 framework 层)
     struct {
-        std::atomic<int64_t> msg_received{0};   // 收到的消息总数
-        std::atomic<int64_t> msg_sent{0};        // 发出的回复总数
-        std::atomic<int64_t> msg_dropped{0};     // 丢弃的消息数
-        std::atomic<int64_t> connections{0};     // 当前活跃连接数
-        std::atomic<int64_t> bytes_received{ 0 };
-        std::atomic<int64_t> bytes_sent{ 0 };
+        std::atomic<int64_t> msg_dropped{0};      // 背压丢弃数
+        std::atomic<int64_t> connections{0};       // 当前活跃连接数
+        std::atomic<int64_t> bytes_received{0};
+        std::atomic<int64_t> bytes_sent{0};
     } metrics;
 };

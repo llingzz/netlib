@@ -23,7 +23,6 @@ set(CORE_SOURCES
 
 set(CORE_HEADERS
     core/config.h
-    core/protocol.h
     core/work_queue.h
     core/buffer_pool.h
     core/shared_frame_pool.h
@@ -33,18 +32,21 @@ set(CORE_HEADERS
 
 # ── Framework 源文件 ───────────────────────────────────────────
 set(FRAMEWORK_SOURCES
-    application.cpp
-    service.cpp
+    framework/application.cpp
+    framework/service.cpp
 )
 
 set(FRAMEWORK_HEADERS
-    service.h
-    middleware.h
-    dispatcher.h
-    application.h
-    middleware/connection_limiter.h
-    middleware/rate_limiter.h
-    middleware/access_log.h
+    framework/service.h
+    framework/middleware.h
+    framework/dispatcher.h
+    framework/application.h
+    framework/codec/codec.h
+    framework/codec/length_prefixed.h
+    framework/codec/raw_codec.h
+    framework/middleware/connection_limiter.h
+    framework/middleware/rate_limiter.h
+    framework/middleware/access_log.h
 )
 
 # ── netlib 静态库 (core engine + framework) ────────────────────
@@ -72,12 +74,14 @@ set(EXAMPLE_SOURCES
     examples/echo/echo_service.cpp
     examples/chat/chat_service.cpp
     examples/dispatcher/dispatcher_service.cpp
+    examples/http/http_service.cpp
 )
 
 set(EXAMPLE_HEADERS
     examples/echo/echo_service.h
     examples/chat/chat_service.h
     examples/dispatcher/dispatcher_service.h
+    examples/http/http_service.h
 )
 
 # ── tcpserver 统一入口 (core + framework + examples) ──────────

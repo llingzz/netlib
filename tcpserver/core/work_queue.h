@@ -10,12 +10,14 @@ class session;
 class buffer_pool;
 
 // 零拷贝 work_item: read_buf 直接从 buffer_pool 移交,
-// payload 数据不复制, offs 直接索引 read_buf 中的原始数据
+// 携带原始字节数据块, 上层负责协议解析 (拆帧)
+//
+// disconnect 信号: sess != nullptr && read_buf == nullptr
 struct work_item {
     std::shared_ptr<session> sess;
-    buffer_pool*             buf_pool = nullptr;  // 用于释放 read_buf
-    char*                    read_buf = nullptr;  // 借出的读缓冲, 含所有 payload
-    std::vector<uint16_t>    offs;                // 偶数=offset, 奇数=length
+    buffer_pool*             buf_pool  = nullptr;  // 用于释放 read_buf
+    char*                    read_buf  = nullptr;  // 借出的读缓冲
+    size_t                   data_len  = 0;        // 有效数据长度
 };
 
 class work_queue

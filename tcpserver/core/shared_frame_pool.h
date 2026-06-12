@@ -127,16 +127,14 @@ public:
         }
     }
 
-    char* acquire(size_t payload_size)
+    char* acquire(size_t total_size)
     {
-        // HEADER_SIZE 2
-        size_t need  = payload_size + 2;
-        size_t frame = round_up_frame(need);
+        size_t frame = round_up_frame(total_size);
         int    ci    = class_index(frame);
         return acquire_from(ci);
     }
 
-    void release(char* data, uint16_t frame_len)
+    void release(char* data, size_t frame_len)
     {
         size_t frame = round_up_frame(frame_len);
         int    ci    = class_index(frame);

@@ -22,15 +22,17 @@ struct frame_buf {
 class session : public std::enable_shared_from_this<session>
 {
 public:
-    session(asio::ip::tcp::socket sock, server& srv, work_queue& wq, buffer_pool& bp, SharedFramePool& fp, const server_config& cfg, uint64_t token);
+    session(asio::ip::tcp::socket sock, server& srv, work_queue& wq,
+            buffer_pool& bp, SharedFramePool& fp,
+            const server_config& cfg, uint64_t token);
     ~session();
 
     uint64_t token() const;
-
-    // 对端地址 (用于 IP 过滤等)
     std::string remote_addr() const;
 
-    void reply(std::string_view data);
+    void reply(std::string_view data);              // 走 encode 后写入
+    void reply_raw(const char* data, size_t len);   // 直接写原始字节
+
     void start();
     void close();
     void try_flush_writes();
@@ -52,7 +54,7 @@ private:
     const server_config&    cfg_;
     uint64_t                token_;
 
-    // 读
+    // 读 — 原始字节缓冲
     char*      read_buf_ = nullptr;
     size_t     data_len_ = 0;
 
@@ -61,10 +63,8 @@ private:
     batch_t    write_queue_;
     size_t     write_queue_bytes_ = 0;
     bool       write_in_flight_ = false;
-    std::vector<asio::const_buffer> write_bufs_;  // 复用
+    std::vector<asio::const_buffer> write_bufs_;
 
     // 关闭
     std::atomic<bool>       closed_{false};
-
-    uint16_t max_payload_;
 };

@@ -136,35 +136,40 @@
     <ClCompile Include="core\server.cpp" />
     <ClCompile Include="core\session.cpp" />
     <!-- Framework -->
-    <ClCompile Include="application.cpp" />
-    <ClCompile Include="service.cpp" />
+    <ClCompile Include="framework\application.cpp" />
+    <ClCompile Include="framework\service.cpp" />
     <!-- Examples -->
     <ClCompile Include="examples\echo\echo_service.cpp" />
     <ClCompile Include="examples\chat\chat_service.cpp" />
     <ClCompile Include="examples\dispatcher\dispatcher_service.cpp" />
+    <ClCompile Include="examples\http\http_service.cpp" />
   </ItemGroup>
   <ItemGroup>
     <!-- Core 头文件 -->
     <ClInclude Include="core\buffer_pool.h" />
     <ClInclude Include="core\config.h" />
-    <ClInclude Include="core\protocol.h" />
     <ClInclude Include="core\server.h" />
     <ClInclude Include="core\session.h" />
     <ClInclude Include="core\shared_frame_pool.h" />
     <ClInclude Include="core\work_queue.h" />
     <!-- Framework 头文件 -->
-    <ClInclude Include="service.h" />
-    <ClInclude Include="middleware.h" />
-    <ClInclude Include="dispatcher.h" />
-    <ClInclude Include="application.h" />
+    <ClInclude Include="framework\service.h" />
+    <ClInclude Include="framework\middleware.h" />
+    <ClInclude Include="framework\dispatcher.h" />
+    <ClInclude Include="framework\application.h" />
+    <!-- Codec 头文件 -->
+    <ClInclude Include="framework\codec\codec.h" />
+    <ClInclude Include="framework\codec\length_prefixed.h" />
+    <ClInclude Include="framework\codec\raw_codec.h" />
     <!-- Middleware 头文件 -->
-    <ClInclude Include="middleware\connection_limiter.h" />
-    <ClInclude Include="middleware\rate_limiter.h" />
-    <ClInclude Include="middleware\access_log.h" />
+    <ClInclude Include="framework\middleware\connection_limiter.h" />
+    <ClInclude Include="framework\middleware\rate_limiter.h" />
+    <ClInclude Include="framework\middleware\access_log.h" />
     <!-- Example 头文件 -->
     <ClInclude Include="examples\echo\echo_service.h" />
     <ClInclude Include="examples\chat\chat_service.h" />
     <ClInclude Include="examples\dispatcher\dispatcher_service.h" />
+    <ClInclude Include="examples\http\http_service.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

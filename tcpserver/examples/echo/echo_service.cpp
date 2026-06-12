@@ -1,8 +1,8 @@
 // ──── Echo 服务实现 ──────────────────────────────────────────
 
 #include "echo_service.h"
-#include "../../application.h"
-#include "../../service.h"
+#include "../../framework/application.h"
+#include "../../framework/service.h"
 #include <spdlog/spdlog.h>
 #include <cstdlib>
 #include <string_view>

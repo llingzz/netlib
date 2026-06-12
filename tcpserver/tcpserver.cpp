@@ -6,17 +6,20 @@
 //   tcpserver echo       [--port N] [--inline]
 //   tcpserver chat       [--port N]
 //   tcpserver dispatcher [--port N]
+//   tcpserver http       [--port N] [--inline]
 //   tcpserver --help
 //
 // 也可以直接在代码中 #include 各服务的头文件并调用:
 //   echo::run(argc, argv);
 //   chat::run(argc, argv);
 //   dispatcher::run(argc, argv);
+//   http_service::run(argc, argv);
 // ───────────────────────────────────────────────────────────────
 
 #include "examples/echo/echo_service.h"
 #include "examples/chat/chat_service.h"
 #include "examples/dispatcher/dispatcher_service.h"
+#include "examples/http/http_service.h"
 
 #include <spdlog/spdlog.h>
 #include <cstring>
@@ -30,6 +33,7 @@ static void print_usage()
         "  tcpserver echo       [--port N] [--inline]     Echo server\n"
         "  tcpserver chat       [--port N]                Chat room server\n"
         "  tcpserver dispatcher [--port N]                Multi-type dispatcher demo\n"
+        "  tcpserver http       [--port N] [--inline]     HTTP server\n"
         "  tcpserver --help                              Show this help\n";
 }
 
@@ -56,6 +60,9 @@ int main(int argc, char* argv[])
     }
     else if (mode == "dispatcher") {
         return dispatcher::run(remaining_argc, remaining_argv);
+    }
+    else if (mode == "http") {
+        return http_service::run(remaining_argc, remaining_argv);
     }
     else if (mode == "--help" || mode == "-h") {
         print_usage();
